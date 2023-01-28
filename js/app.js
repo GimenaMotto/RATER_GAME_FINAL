@@ -4,7 +4,7 @@ const game = {
     license: undefined,
     version: '1.0.0',
     ctx: undefined,
-
+    gameBoard: undefined,
 
     canvasSize: {
         w: undefined,
@@ -21,7 +21,10 @@ const game = {
     init() {
         this.setDimensions()
         this.setContext()
+        this.createGameBoard()
+
         this.start()
+
     },
 
     setContext() {
@@ -51,8 +54,15 @@ const game = {
     },
 
     drawAll() {
+        this.gameBoard.drawGameBoard()
+    },
+
+    createGameBoard() {
+        this.gameBoard = new Gameboard(this.ctx, this.canvasSize)
 
     }
+
+
 
 
 }
