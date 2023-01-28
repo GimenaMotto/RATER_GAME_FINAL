@@ -10,6 +10,8 @@ const game = {
         w: undefined,
         h: undefined
     },
+    framesIndex: 0,
+    cars: [],
 
 
 
@@ -18,8 +20,9 @@ const game = {
         this.setDimensions()
         this.setContext()
         this.createGameBoard()
-
+        this.createCars()
         this.createPlayer()
+
         this.start()
 
     },
@@ -43,7 +46,10 @@ const game = {
         setInterval(() => {
             this.clearAll()
             this.drawAll()
+            this.framesIndex++
 
+            if (this.framesIndex % 150 === 0) this.createCars()
+            this.clearCars()
         }, 10)
     },
 
@@ -56,8 +62,8 @@ const game = {
     drawAll() {
         this.gameBoard.drawGameBoard()
         this.player.drawPlayer()
-
-
+        this.cars.forEach(elem => elem.drawCars())
+        console.log(this.cars)
     },
 
     createGameBoard() {
@@ -66,8 +72,16 @@ const game = {
     },
     createPlayer() {
         this.player = new Player(this.ctx, this.canvasSize)
-    }
+    },
 
+    createCars() {
+        this.cars.push(new Cars(this.ctx, this.canvasSize))
 
+        console.log(this.cars)
+    },
+    clearCars() {
+        this.cars = this.cars.filter(elem => elem.carsPos.x <= this.canvasSize.w)
+        return this.cars
+    },
 
 }
