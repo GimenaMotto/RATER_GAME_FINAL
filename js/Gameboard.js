@@ -7,8 +7,8 @@ class Gameboard {
             w: this.canvasSize.w,
             h: this.canvasSize.h
 
-        },
-            this.beginning = undefined
+        }
+
 
 
     }

@@ -5,24 +5,21 @@ const game = {
     version: '1.0.0',
     ctx: undefined,
     gameBoard: undefined,
-
+    player: undefined,
     canvasSize: {
         w: undefined,
         h: undefined
     },
 
-    keys: {
-        UP: undefined,//
-        DOWN: undefined, //
-        LEFT: undefined, //
-        RIGHT: undefined, //
-    },
+
 
     init() {
+
         this.setDimensions()
         this.setContext()
         this.createGameBoard()
 
+        this.createPlayer()
         this.start()
 
     },
@@ -38,6 +35,9 @@ const game = {
         document.querySelector('#canvas').setAttribute('height', this.canvasSize.h)
 
     },
+
+
+
 
     start() {
         setInterval(() => {
@@ -55,13 +55,18 @@ const game = {
 
     drawAll() {
         this.gameBoard.drawGameBoard()
+        this.player.drawPlayer()
+
+
     },
 
     createGameBoard() {
         this.gameBoard = new Gameboard(this.ctx, this.canvasSize)
 
+    },
+    createPlayer() {
+        this.player = new Player(this.ctx, this.canvasSize)
     }
-
 
 
 
