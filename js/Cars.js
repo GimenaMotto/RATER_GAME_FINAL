@@ -1,5 +1,5 @@
 class Cars {
-    constructor(ctx, canvasSize) {
+    constructor(ctx, canvasSize, carsPosX, carsPosY, carsSpeed) {
         this.ctx = ctx
         this.canvasSize = canvasSize
 
@@ -10,9 +10,10 @@ class Cars {
         }
 
         this.carsPos = {
-            x: 0,
-            y: this.canvasSize.h - 5 * this.canvasSize.h / 12
+            x: carsPosX,
+            y: carsPosY
         }
+        this.carsSpeed = carsSpeed
 
         this.drawCars()
     }
@@ -23,11 +24,6 @@ class Cars {
         this.ctx.fillStyle = '#EDBC66'
         this.ctx.fillRect(this.carsPos.x, this.carsPos.y, this.carsSize.w, this.carsSize.h)
 
-        this.ctx.fillStyle = '#EDBC66'
-        this.ctx.fillRect(this.carsPos.x, this.carsPos.y, this.carsSize.w, this.carsSize.h)
-
-        this.ctx.fillStyle = '#EDBC66'
-        this.ctx.fillRect(this.carsPos.x, this.carsPos.y, this.carsSize.w, this.carsSize.h)
 
 
 
@@ -36,7 +32,7 @@ class Cars {
 
 
     moveCars() {
-        this.carsPos.x += this.carsSize.w / 20
+        this.carsPos.x += this.carsSpeed
 
     }
 }

@@ -12,6 +12,7 @@ const game = {
     },
     framesIndex: 0,
     cars: [],
+    trunks: [],
 
 
 
@@ -22,6 +23,7 @@ const game = {
         this.createGameBoard()
         this.createCars()
         this.createPlayer()
+        // this.colisions()
 
         this.start()
 
@@ -48,8 +50,14 @@ const game = {
             this.drawAll()
             this.framesIndex++
 
-            if (this.framesIndex % 150 === 0) this.createCars()
+            if (this.framesIndex % 100 === 0) this.createCars()
+            if (this.framesIndex % 100 === 0) this.createTrunks1()
+            if (this.framesIndex % 50 === 0) this.createTrunks2()
             this.clearCars()
+            this.clearTrunks()
+            // this.colisions()
+
+            // if (colisions() === true) console.log("te pille")
         }, 10)
     },
 
@@ -61,9 +69,10 @@ const game = {
 
     drawAll() {
         this.gameBoard.drawGameBoard()
-        this.player.drawPlayer()
+
         this.cars.forEach(elem => elem.drawCars())
-        console.log(this.cars)
+        this.trunks.forEach(elem => elem.drawTrunks())
+        this.player.drawPlayer()
     },
 
     createGameBoard() {
@@ -72,16 +81,68 @@ const game = {
     },
     createPlayer() {
         this.player = new Player(this.ctx, this.canvasSize)
+        console.log(this.player)
     },
 
     createCars() {
-        this.cars.push(new Cars(this.ctx, this.canvasSize))
+        this.cars.push(new Cars(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 12, this.canvasSize.h - 5 * this.canvasSize.h / 12, 30))
+        this.cars.push(new Cars(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.h / 12, 30))
+        this.cars.push(new Cars(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 12, this.canvasSize.h - 3 * this.canvasSize.h / 12, 30))
+        this.cars.push(new Cars(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.h / 12, -60))
 
-        console.log(this.cars)
+
+
+    },
+
+    createTrunks1() {
+        this.trunks.push(new Trunks(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.h / 12, 30, this.canvasSize.h / 4, this.canvasSize.h / 12))
+        this.trunks.push(new Trunks(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.h / 12, 30, this.canvasSize.h / 4, this.canvasSize.h / 12))
+        //this.trunks.push(new Trunks(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.h / 12, -60, this.canvasSize.h / 12, this.canvasSize.h / 12))
+        //this.trunks.push(new Trunks(this.ctx, this.canvasSize, this.canvasSize.w - this.canvasSize.w / 20, this.canvasSize.h - 8 * this.canvasSize.h / 12, -60, this.canvasSize.h / 12, this.canvasSize.h / 12))
+
+
+        //console.log(this.cars)
+        // console.log(this.trunks)
+    },
+
+    createTrunks2() {
+        //this.trunks.push(new Trunks(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.h / 12, 30, this.canvasSize.h / 4, this.canvasSize.h / 12))
+        //this.trunks.push(new Trunks(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.h / 12, 30, this.canvasSize.h / 4, this.canvasSize.h / 12))
+        this.trunks.push(new Trunks(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.h / 12, -45, this.canvasSize.h / 12, this.canvasSize.h / 12))
+        this.trunks.push(new Trunks(this.ctx, this.canvasSize, this.canvasSize.w - this.canvasSize.w / 20, this.canvasSize.h - 8 * this.canvasSize.h / 12, -45, this.canvasSize.h / 12, this.canvasSize.h / 12))
+
+
+        //console.log(this.cars)
+        // console.log(this.trunks)
     },
     clearCars() {
-        this.cars = this.cars.filter(elem => elem.carsPos.x <= this.canvasSize.w)
+        this.cars = this.cars.filter(elem => elem.carsPos.x <= 2 * this.canvasSize.w && elem.carsPos.x >= -2 * this.canvasSize.w)
         return this.cars
     },
+
+    clearTrunks() {
+        this.trunks = this.trunks.filter(elem => elem.trunksPos.x <= 2 * this.canvasSize.w && elem.trunksPos.x >= -2 * this.canvasSize.w)
+        return this.trunks
+    },
+
+    //  colisions() {
+    //  return this.cars.some(elem => {
+    //    return (
+    //      this.player.playerPos.x + this.player.playerSize.w >= elem.carsPos.x &&
+    //    this.player.playerPos.y + this.player.playerSize.h >= elem.carsPos.y &&
+    //  this.player.playerPos.x <= elem.carsPos.x + elem.carsSize.w
+    // )
+    // })
+
+
+
+    // },
+
+    // gameOver() {
+    //  if (this.colisions() === true) {
+    //      console.log('Te pille')
+    //  }
+    //  }
+
 
 }
