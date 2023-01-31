@@ -6,19 +6,16 @@ const game = {
     ctx: undefined,
     gameBoard: undefined,
     player: undefined,
-    homes: [],
     canvasSize: {
         w: undefined,
         h: undefined,
         row: undefined
     },
-
     framesIndex: 0,
+    homes: [],
     cars: [],
     trunks: [],
     playerCount: 0,
-    OccupiedHomeInstance: undefined,
-
 
 
     init() {
@@ -27,7 +24,7 @@ const game = {
         this.setContext()
         this.createHome()
         this.start()
-        // this.isNextLevel()
+        this.isNextLevel()
 
     },
 
@@ -52,18 +49,15 @@ const game = {
             this.drawAll()
             this.framesIndex++
 
+            if (this.framesIndex % 120 === 0) this.createCar()
+            if (this.framesIndex % 150 === 0) this.createTrunk1()
+            if (this.framesIndex % 60 === 0) this.createTrunk2()
 
-
-            if (this.framesIndex % 160 === 0) this.createCar()
-            if (this.framesIndex % 250 === 0) this.createTrunk1()
-            if (this.framesIndex % 100 === 0) this.createTrunk2()
             this.clearCar()
             this.clearTrunk()
-            //this.isTrunk()
             this.isRiver()
 
-            //if (this.isWater()) { this.reset() }
-            //  if (this.isCollisions()) { this.reset() }
+            if (this.isCollisions()) { this.reset() }
 
             if (this.isHome()) {
                 console.log("colision con la casitaaaa")
@@ -86,8 +80,6 @@ const game = {
         this.cars.forEach(elem => elem.draw())
         this.trunks.forEach(elem => elem.draw())
         this.player.draw()
-
-
     },
 
     reset() {
@@ -100,8 +92,6 @@ const game = {
         alert('Push to Start')
     },
 
-
-
     createHome() {
         this.homes.push(new Home(this.ctx, this.canvasSize, this.canvasSize.w / 2 - this.canvasSize.row / 2, this.canvasSize.row * 2))
         this.homes.push(new Home(this.ctx, this.canvasSize, this.canvasSize.w / 2 - 4 * this.canvasSize.row - this.canvasSize.row / 2, this.canvasSize.row * 2))
@@ -111,23 +101,20 @@ const game = {
     },
 
     createCar() {
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 5))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.row, 5))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 5))
-        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -10))
-
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 20))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.row, 20))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 20))
+        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -35))
     },
 
     createTrunk1() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 2, this.canvasSize.h / 4, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 2, this.canvasSize.h / 4, this.canvasSize.row))
-
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 20, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 20, this.canvasSize.h / 4, this.canvasSize.row))
     },
 
     createTrunk2() {
-
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -6, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -6, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -30, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -30, this.canvasSize.row, this.canvasSize.row))
     },
 
     clearCar() {
@@ -150,43 +137,7 @@ const game = {
         })
     },
 
-    // isTrunk() {
-
-    //     for (let i = 0; i < this.trunks.length; i++) {
-
-    //         if (this.player.playerPos.x + this.player.playerSize.w >= this.trunks[i].trunkPos.x &&
-    //             this.player.playerPos.y + this.player.playerSize.h - 5 >= this.trunks[i].trunkPos.y &&
-    //             this.player.playerPos.x <= this.trunks[i].trunkPos.x + this.trunks[i].trunkSize.w &&
-    //             this.player.playerPos.y + 2 <= this.trunks[i].trunkPos.y + this.trunks[i].trunkSize.h) {
-    //             if (this.trunks[i].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[i].trunkPos.x > 0) {
-    //                 this.player.playerPos.x = this.trunks[i].trunkPos.x
-    //             }
-
-    //             //console.log("====================== COLISIÓN =============================")
-    //         }
-
-    //     }
-
-    // },
-
-    // isWater() {
-    //     // this.trunks.some(elem => {
-    //     //    if (this.player.playerPos.x + this.player.playerSize.w >= elem.trunkPos.x &&
-    //     //        this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.trunkPos.y &&
-    //     //       this.player.playerPos.x <= elem.trunkPos.x + elem.trunkSize.w &&
-    //     //       this.player.playerPos.y + 2 <= elem.trunkPos.y + elem.trunkSize.h) { return false }
-
-    //     if (
-    //         this.player.playerPos.x + this.player.playerSize.w >= this.gameBoard.waterPos.x &&
-    //         this.player.playerPos.y + this.player.playerSize.h - 5 >= this.gameBoard.waterPos.y &&
-    //         this.player.playerPos.x <= this.gameBoard.waterPos.x + this.gameBoard.waterSize.w &&
-    //         this.player.playerPos.y + 2 <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
-    //     ) { return true }
-    // },
-
-
     isRiver() {
-
         let isWater = false
         if (
             this.player.playerPos.x + this.player.playerSize.w >= this.gameBoard.waterPos.x &&
@@ -215,32 +166,17 @@ const game = {
             }
         } else if (isWater) {
             console.log('whatter check')
-            //this.reset()
+            this.reset()
         }
-
-
     },
-
-
-
-
 
     isHome() {
         return this.homes.some(elem => {
             return (
-                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h &&
-                this.player.playerPos.x === elem.homePos.x
+                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h //&&
+                //this.player.playerPos.x === elem.homePos.x
             )
         })
-    },
-    createOccupiedHome() {
-        this.OccupiedHomeInstance = new Image()
-        this.OccupiedHomeInstance.src = './images/llegada.png'
-    },
-
-
-    drawOccupiedHome() {
-        this.ctx.drawImage(this.OccupiedHomeInstance,)
     },
 
     isNextLevel() {
@@ -251,8 +187,5 @@ const game = {
             }, 500)
         }
     }
-
-
-
 
 }
