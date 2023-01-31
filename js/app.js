@@ -16,7 +16,8 @@ const game = {
     framesIndex: 0,
     cars: [],
     trunks: [],
-    player: [],
+    playerCount: 0,
+    OccupiedHomeInstance: undefined,
 
 
 
@@ -25,9 +26,10 @@ const game = {
         this.setDimensions()
         this.setContext()
         this.createHome()
-        this.createPlayer()
+
         this.isTrunk()
         this.start()
+        // this.isNextLevel()
 
     },
 
@@ -47,23 +49,28 @@ const game = {
 
         this.reset()
         setInterval(() => {
-
+            this.isNextLevel()
             this.clearAll()
             this.drawAll()
             this.framesIndex++
 
 
-            // if(this.isHome()) this.createPlayer(pushhhh)
+
             if (this.framesIndex % 120 === 0) this.createCar()
             if (this.framesIndex % 100 === 0) this.createTrunk1()
             if (this.framesIndex % 50 === 0) this.createTrunk2()
             this.clearCar()
             this.clearTrunk()
-
+            // this.isTrunk()
+            //if (this.isWater()) { this.reset() }
             //  if (this.isCollisions()) { this.reset() }
-            // isTrunk()
-            if (this.isHome()) { console.log("casita") }
-            //  if (this.isWater()) { this.reset() }
+
+            if (this.isHome()) {
+
+                this.playerCount++
+                this.player.playerPos.x = this.player.playerPosInicial.x
+                this.player.playerPos.y = this.player.playerPosInicial.y
+            }
 
         }, 10)
     },
@@ -78,24 +85,22 @@ const game = {
         this.homes.forEach(elem => elem.draw())
         this.cars.forEach(elem => elem.draw())
         this.trunks.forEach(elem => elem.draw())
-        this.player.forEach(elem => elem.draw())
+        this.player.draw()
+
 
     },
 
     reset() {
         this.gameBoard = new Gameboard(this.ctx, this.canvasSize)
-        // this.player = this.player.push(new Player(this.ctx, this.canvasSize))
-        // this.player = new Player(this.ctx, this.canvasSize)
+
+        this.player = new Player(this.ctx, this.canvasSize, this.canvasSize.w / 2 - this.canvasSize.row / 2, this.canvasSize.h - 2 * this.canvasSize.row, 0)
         this.cars = []
         this.trunks = []
 
         alert('Push to Start')
     },
 
-    createPlayer() {
-        this.player.push(new Player(this.ctx, this.canvasSize))
-        console.log(this.player)
-    },
+
 
     createHome() {
         this.homes.push(new Home(this.ctx, this.canvasSize, this.canvasSize.w / 2 - this.canvasSize.row / 2, this.canvasSize.row * 2))
@@ -114,15 +119,15 @@ const game = {
     },
 
     createTrunk1() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 15, this.canvasSize.h / 4, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 15, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 5, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 5, this.canvasSize.h / 4, this.canvasSize.row))
 
     },
 
     createTrunk2() {
 
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -25, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -25, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -10, this.canvasSize.row, this.canvasSize.row))
     },
 
     clearCar() {
@@ -144,50 +149,69 @@ const game = {
 
         })
     },
-    //colisiones: no puede acceder a los valores de player porq ahora es un elemento de un array
+
     isTrunk() {
 
         for (let i = 0; i < this.trunks.length; i++) {
 
-            if (this.player.playerPos.x + this.player.playerSize.w >= trunks[i].trunkPos.x &&
-                this.player.playerPos.y + this.player.playerSize.h - 5 >= trunks[i].trunkPos.y &&
-                this.player.playerPos.x <= trunks[i].trunkPos.x + trunks[i].trunkSize.w &&
-                this.player.playerPos.y + 2 <= trunks[i].trunkPos.y + trunks[i].trunkSize.h) {
-                return this.player.playerPos.x = trunks[i].trunkPos.x
+            if (this.player.playerPos.x + this.player.playerSize.w >= this.trunks[i].trunkPos.x &&
+                this.player.playerPos.y + this.player.playerSize.h - 5 >= this.trunks[i].trunkPos.y &&
+                this.player.playerPos.x <= this.trunks[i].trunkPos.x + this.trunks[i].trunkSize.w &&
+                this.player.playerPos.y + 2 <= this.trunks[i].trunkPos.y + this.trunks[i].trunkSize.h) {
+                if (this.trunks[i].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[i].trunkPos.x > 0) {
+                    //  this.isWater() === false
+                    this.player.playerPos.x = this.trunks[i].trunkPos.x
+                }
+
+                //console.log("====================== COLISIÓN =============================")
             }
+
         }
+
     },
 
     isWater() {
+        // this.trunks.some(elem => {
+        //    if (this.player.playerPos.x + this.player.playerSize.w >= elem.trunkPos.x &&
+        //        this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.trunkPos.y &&
+        //       this.player.playerPos.x <= elem.trunkPos.x + elem.trunkSize.w &&
+        //       this.player.playerPos.y + 2 <= elem.trunkPos.y + elem.trunkSize.h) { return false }
 
-        return this.player.some(elem => {
-            return (
-                elem.playerPos.x + elem.playerSize.w >= this.gameBoard.waterPos.x &&
-                elem.playerPos.y + elem.playerSize.h - 5 >= this.gameBoard.waterPos.y &&
-                elem.playerPos.x <= this.gameBoard.waterPos.x + this.gameBoard.waterSize.w &&
-                elem.playerPos.y + 2 <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
-            )
-
-        })
-
+        if (
+            this.player.playerPos.x + this.player.playerSize.w >= this.gameBoard.waterPos.x &&
+            this.player.playerPos.y + this.player.playerSize.h >= this.gameBoard.waterPos.y &&
+            this.player.playerPos.x <= this.gameBoard.waterPos.x + this.gameBoard.waterSize.w &&
+            this.player.playerPos.y <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
+        ) { return true }
     },
 
     isHome() {
         return this.homes.some(elem => {
             return (
-                this.player.playerPos.x + this.player.playerSize.w >= elem.homePos.x &&
-                this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.homePos.y &&
-                this.player.playerPos.x <= elem.homePos.x + elem.homeSize.w &&
-                this.player.playerPos.y + 2 <= elem.homePos.y + elem.homeSize.h
+                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h
             )
         })
+    },
+    createOccupiedHome() {
+        this.OccupiedHomeInstance = new Image()
+        this.OccupiedHomeInstance.src = './images/llegada.png'
+    },
+
+
+    drawOccupiedHome() {
+        this.ctx.drawImage(this.OccupiedHomeInstance,)
+    },
+
+    isNextLevel() {
+        if (this.playerCount === 5) {
+            this.playerCount = 0
+            setTimeout(() => {
+                alert('Next Level')
+            }, 500)
+        }
     }
 
-    // gameOver() {
-    //  if (this.collisions()) {
-    //      this.reset()
-    //  }
-    //  }
+
 
 
 }

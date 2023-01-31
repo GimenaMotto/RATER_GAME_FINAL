@@ -23,13 +23,7 @@ class Trunk {
         this.move()
         this.ctx.fillStyle = '#F0753B'
         this.ctx.fillRect(this.trunkPos.x, this.trunkPos.y, this.trunkSize.w, this.trunkSize.h)
-
-
-
-
     }
-
-
 
     move() {
         this.trunkPos.x += this.trunkSpeed
