@@ -26,8 +26,6 @@ const game = {
         this.setDimensions()
         this.setContext()
         this.createHome()
-
-        this.isTrunk()
         this.start()
         // this.isNextLevel()
 
@@ -56,17 +54,19 @@ const game = {
 
 
 
-            if (this.framesIndex % 120 === 0) this.createCar()
-            if (this.framesIndex % 100 === 0) this.createTrunk1()
-            if (this.framesIndex % 50 === 0) this.createTrunk2()
+            if (this.framesIndex % 160 === 0) this.createCar()
+            if (this.framesIndex % 250 === 0) this.createTrunk1()
+            if (this.framesIndex % 100 === 0) this.createTrunk2()
             this.clearCar()
             this.clearTrunk()
-            // this.isTrunk()
+            //this.isTrunk()
+            this.isRiver()
+
             //if (this.isWater()) { this.reset() }
             //  if (this.isCollisions()) { this.reset() }
 
             if (this.isHome()) {
-
+                console.log("colision con la casitaaaa")
                 this.playerCount++
                 this.player.playerPos.x = this.player.playerPosInicial.x
                 this.player.playerPos.y = this.player.playerPosInicial.y
@@ -111,23 +111,23 @@ const game = {
     },
 
     createCar() {
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -30))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 5))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.row, 5))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 5))
+        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -10))
 
     },
 
     createTrunk1() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 5, this.canvasSize.h / 4, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 5, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 2, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 2, this.canvasSize.h / 4, this.canvasSize.row))
 
     },
 
     createTrunk2() {
 
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -10, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -6, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -6, this.canvasSize.row, this.canvasSize.row))
     },
 
     clearCar() {
@@ -150,45 +150,86 @@ const game = {
         })
     },
 
-    isTrunk() {
+    // isTrunk() {
 
-        for (let i = 0; i < this.trunks.length; i++) {
+    //     for (let i = 0; i < this.trunks.length; i++) {
 
-            if (this.player.playerPos.x + this.player.playerSize.w >= this.trunks[i].trunkPos.x &&
-                this.player.playerPos.y + this.player.playerSize.h - 5 >= this.trunks[i].trunkPos.y &&
-                this.player.playerPos.x <= this.trunks[i].trunkPos.x + this.trunks[i].trunkSize.w &&
-                this.player.playerPos.y + 2 <= this.trunks[i].trunkPos.y + this.trunks[i].trunkSize.h) {
-                if (this.trunks[i].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[i].trunkPos.x > 0) {
-                    //  this.isWater() === false
-                    this.player.playerPos.x = this.trunks[i].trunkPos.x
-                }
+    //         if (this.player.playerPos.x + this.player.playerSize.w >= this.trunks[i].trunkPos.x &&
+    //             this.player.playerPos.y + this.player.playerSize.h - 5 >= this.trunks[i].trunkPos.y &&
+    //             this.player.playerPos.x <= this.trunks[i].trunkPos.x + this.trunks[i].trunkSize.w &&
+    //             this.player.playerPos.y + 2 <= this.trunks[i].trunkPos.y + this.trunks[i].trunkSize.h) {
+    //             if (this.trunks[i].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[i].trunkPos.x > 0) {
+    //                 this.player.playerPos.x = this.trunks[i].trunkPos.x
+    //             }
 
-                //console.log("====================== COLISIÓN =============================")
-            }
+    //             //console.log("====================== COLISIÓN =============================")
+    //         }
 
-        }
+    //     }
 
-    },
+    // },
 
-    isWater() {
-        // this.trunks.some(elem => {
-        //    if (this.player.playerPos.x + this.player.playerSize.w >= elem.trunkPos.x &&
-        //        this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.trunkPos.y &&
-        //       this.player.playerPos.x <= elem.trunkPos.x + elem.trunkSize.w &&
-        //       this.player.playerPos.y + 2 <= elem.trunkPos.y + elem.trunkSize.h) { return false }
+    // isWater() {
+    //     // this.trunks.some(elem => {
+    //     //    if (this.player.playerPos.x + this.player.playerSize.w >= elem.trunkPos.x &&
+    //     //        this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.trunkPos.y &&
+    //     //       this.player.playerPos.x <= elem.trunkPos.x + elem.trunkSize.w &&
+    //     //       this.player.playerPos.y + 2 <= elem.trunkPos.y + elem.trunkSize.h) { return false }
 
+    //     if (
+    //         this.player.playerPos.x + this.player.playerSize.w >= this.gameBoard.waterPos.x &&
+    //         this.player.playerPos.y + this.player.playerSize.h - 5 >= this.gameBoard.waterPos.y &&
+    //         this.player.playerPos.x <= this.gameBoard.waterPos.x + this.gameBoard.waterSize.w &&
+    //         this.player.playerPos.y + 2 <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
+    //     ) { return true }
+    // },
+
+
+    isRiver() {
+
+        let isWater = false
         if (
             this.player.playerPos.x + this.player.playerSize.w >= this.gameBoard.waterPos.x &&
-            this.player.playerPos.y + this.player.playerSize.h >= this.gameBoard.waterPos.y &&
+            this.player.playerPos.y + this.player.playerSize.h - 5 >= this.gameBoard.waterPos.y &&
             this.player.playerPos.x <= this.gameBoard.waterPos.x + this.gameBoard.waterSize.w &&
-            this.player.playerPos.y <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
-        ) { return true }
+            this.player.playerPos.y + 2 <= this.gameBoard.waterPos.y + this.gameBoard.waterSize.h
+        ) {
+            isWater = true
+        }
+        let currentTrunk = undefined
+        let isTrunk = false
+        this.trunks.forEach(elem => {
+            if (this.player.playerPos.x + this.player.playerSize.w >= elem.trunkPos.x &&
+                this.player.playerPos.y + this.player.playerSize.h - 5 >= elem.trunkPos.y &&
+                this.player.playerPos.x <= elem.trunkPos.x + elem.trunkSize.w &&
+                this.player.playerPos.y + 2 <= elem.trunkPos.y + elem.trunkSize.h) {
+                currentTrunk = this.trunks.indexOf(elem)
+                isTrunk = true
+            }
+        })
+
+        if (isWater && isTrunk) {
+            console.log('doble check')
+            if (this.trunks[currentTrunk].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[currentTrunk].trunkPos.x > 0) {
+                this.player.playerPos.x = this.trunks[currentTrunk].trunkPos.x
+            }
+        } else if (isWater) {
+            console.log('whatter check')
+            //this.reset()
+        }
+
+
     },
+
+
+
+
 
     isHome() {
         return this.homes.some(elem => {
             return (
-                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h
+                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h &&
+                this.player.playerPos.x === elem.homePos.x
             )
         })
     },
