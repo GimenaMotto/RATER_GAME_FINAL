@@ -16,15 +16,26 @@ const game = {
     cars: [],
     trunks: [],
     playerCount: 0,
+    counterImages: [],
+    livesImages: [],
+    lives: 3,
+    interval: undefined,
+    fps: 100,
+    gameOverRat: undefined,
+    gameOver: undefined,
 
 
     init() {
 
         this.setDimensions()
         this.setContext()
+        this.createLives()
         this.createHome()
+        this.createCounter()
         this.start()
-        this.isNextLevel()
+        //this.isWin()
+        //this.isGameOver()
+
 
     },
 
@@ -43,30 +54,41 @@ const game = {
     start() {
 
         this.reset()
-        setInterval(() => {
-            this.isNextLevel()
+        this.interval = setInterval(() => {
+            //  this.isWin()
             this.clearAll()
             this.drawAll()
             this.framesIndex++
 
-            if (this.framesIndex % 120 === 0) this.createCar()
-            if (this.framesIndex % 150 === 0) this.createTrunk1()
-            if (this.framesIndex % 60 === 0) this.createTrunk2()
+            if (this.framesIndex % 160 === 0) this.createCar1()
+            if (this.framesIndex % 90 === 0) this.createCar2()
+            if (this.framesIndex % 200 === 0) this.createTrunk1()
+            if (this.framesIndex % 100 === 0) this.createTrunk2()
 
             this.clearCar()
             this.clearTrunk()
             this.isRiver()
 
-            if (this.isCollisions()) { this.reset() }
+
+
+            if (this.isCollisions()) {
+                this.player.playerPos.x = this.player.playerPosInicial.x
+                this.player.playerPos.y = this.player.playerPosInicial.y
+                this.lives -= 1
+                this.livesImages.pop()
+            }
+            if (this.lives === 0) { this.isGameOver() }
+            if (this.playerCount === 5) { this.isWin() }
+
 
             if (this.isHome()) {
-                console.log("colision con la casitaaaa")
+
                 this.playerCount++
                 this.player.playerPos.x = this.player.playerPosInicial.x
                 this.player.playerPos.y = this.player.playerPosInicial.y
             }
 
-        }, 10)
+        }, 1000 / this.fps)
     },
 
     clearAll() {
@@ -80,7 +102,39 @@ const game = {
         this.cars.forEach(elem => elem.draw())
         this.trunks.forEach(elem => elem.draw())
         this.player.draw()
+        this.livesImages.forEach(elem => elem.draw())
+        this.drawCounter()
     },
+
+    drawCounter() {
+        if (this.playerCount === 1) {
+            this.counterImages[0].draw()
+        }
+        if (this.playerCount === 2) {
+            this.counterImages[0].draw()
+            this.counterImages[1].draw()
+        }
+        if (this.playerCount === 3) {
+            this.counterImages[0].draw()
+            this.counterImages[1].draw()
+            this.counterImages[2].draw()
+        }
+        if (this.playerCount === 4) {
+            this.counterImages[0].draw()
+            this.counterImages[1].draw()
+            this.counterImages[2].draw()
+            this.counterImages[3].draw()
+        }
+        if (this.playerCount === 5) {
+            this.counterImages[0].draw()
+            this.counterImages[1].draw()
+            this.counterImages[2].draw()
+            this.counterImages[3].draw()
+            this.counterImages[4].draw()
+        }
+    },
+
+
 
     reset() {
         this.gameBoard = new Gameboard(this.ctx, this.canvasSize)
@@ -88,8 +142,27 @@ const game = {
         this.player = new Player(this.ctx, this.canvasSize, this.canvasSize.w / 2 - this.canvasSize.row / 2, this.canvasSize.h - 2 * this.canvasSize.row, 0)
         this.cars = []
         this.trunks = []
+        this.playerCount = 0
+        this.lives = 3
 
-        alert('Push to Start')
+
+
+
+
+    },
+
+    createLives() {
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 3, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 5, 11 * this.canvasSize.row))
+    },
+
+    createCounter() {
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row, 0))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 3, 0))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 5, 0))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 7, 0))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 9, 0))
     },
 
     createHome() {
@@ -100,21 +173,28 @@ const game = {
         this.homes.push(new Home(this.ctx, this.canvasSize, this.canvasSize.w / 2 + 8 * this.canvasSize.row - this.canvasSize.row / 2, this.canvasSize.row * 2))
     },
 
-    createCar() {
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 5, this.canvasSize.h - 5 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 20))
+    createCar1() {
+        //this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 20))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - 5 * this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 15))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 15))
+
+    },
+
+    createCar2() {
         this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -35))
     },
 
     createTrunk1() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 20, this.canvasSize.h / 4, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 7 * this.canvasSize.row, 20, this.canvasSize.h / 4, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4 + 2 * this.canvasSize.row, this.canvasSize.h - 9 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5, this.canvasSize.h - 7 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5 + 2 * this.canvasSize.row, this.canvasSize.h - 7 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+
     },
 
     createTrunk2() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -30, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w + this.canvasSize.row, this.canvasSize.h - 8 * this.canvasSize.row, -30, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -15, this.canvasSize.row, this.canvasSize.row))
     },
 
     clearCar() {
@@ -160,13 +240,16 @@ const game = {
         })
 
         if (isWater && isTrunk) {
-            console.log('doble check')
+
             if (this.trunks[currentTrunk].trunkPos.x < this.canvasSize.w - this.canvasSize.row && this.trunks[currentTrunk].trunkPos.x > 0) {
                 this.player.playerPos.x = this.trunks[currentTrunk].trunkPos.x
             }
         } else if (isWater) {
-            console.log('whatter check')
-            this.reset()
+
+            this.player.playerPos.x = this.player.playerPosInicial.x
+            this.player.playerPos.y = this.player.playerPosInicial.y
+            this.lives -= 1
+            this.livesImages.pop()
         }
     },
 
@@ -179,13 +262,29 @@ const game = {
         })
     },
 
-    isNextLevel() {
-        if (this.playerCount === 5) {
-            this.playerCount = 0
-            setTimeout(() => {
-                alert('Next Level')
-            }, 500)
-        }
+    isWin() {
+
+        clearInterval(this.interval)
+        this.ctx.fillStyle = '#F7AAFA'
+        this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
+
+    },
+
+    isGameOver() {
+        clearInterval(this.interval)
+        this.ctx.fillStyle = 'white'
+        this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
+
+        this.gameOverRat = new Image()
+        this.gameOverRat.src = ("./images/ratcounter.png")
+        this.ctx.drawImage(this.gameOverRat, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
+
+        this.gameOver = new Image()
+        this.gameOver.src = ("./images/gameover.png")
+        this.ctx.drawImage(this.gameOver, this.canvasSize.w / 2, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
+
+
     }
+
 
 }

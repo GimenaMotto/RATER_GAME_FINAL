@@ -15,14 +15,24 @@ class Trunk {
         }
         this.trunkSpeed = trunkSpeed
 
+        this.image = undefined
+
         this.draw()
     }
 
     draw() {
 
         this.move()
-        this.ctx.fillStyle = '#F0753B'
-        this.ctx.fillRect(this.trunkPos.x, this.trunkPos.y, this.trunkSize.w, this.trunkSize.h)
+
+        this.image = new Image()
+        this.image.src = ("./images/wood.png")
+        this.ctx.drawImage(
+            this.image,
+            this.trunkPos.x,
+            this.trunkPos.y,
+            this.trunkSize.w,
+            this.trunkSize.h)
+
     }
 
     move() {

@@ -19,7 +19,15 @@ class Gameboard {
             y: this.canvasSize.h - 9 * this.canvasSize.row
         }
 
+        this.waterInstance = undefined
 
+        this.roadInstance = undefined
+
+        this.begginingInstance = undefined
+
+        this.transitionInstance = undefined
+
+        this.finishInstance = undefined
 
     }
 
@@ -40,24 +48,41 @@ class Gameboard {
     }
 
     drawBeggining() {
-        this.ctx.fillStyle = '#8C77D4'
-        this.ctx.fillRect(0, this.canvasSize.h - 2 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
+        this.begginingInstance = new Image()
+        this.begginingInstance.src = ("./images/grass.png")
+        this.ctx.drawImage(this.begginingInstance, 0, this.canvasSize.h - 2 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
+
     }
 
     drawTransition() {
-        this.ctx.fillStyle = '#8C77D4'
-        this.ctx.fillRect(0, this.canvasSize.h - 6 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
+        this.transitionInstance = new Image()
+        this.transitionInstance.src = ("./images/grass.png")
+        this.ctx.drawImage(this.transitionInstance, 0, this.canvasSize.h - 6 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
+
     }
     drawFinishLine() {
-        this.ctx.fillStyle = '#85D698'
-        this.ctx.fillRect(0, this.canvasSize.h - 11 * this.canvasSize.row, this.canvasSize.w, 2 * this.canvasSize.row)
+        this.finishInstance = new Image()
+        this.finishInstance.src = ("./images/road3.png")
+        this.ctx.drawImage(this.finishInstance, 0, this.canvasSize.h - 11 * this.canvasSize.row, this.canvasSize.w, 2 * this.canvasSize.row)
+
+        // this.ctx.fillStyle = '#85D698'
+        // this.ctx.fillRect(0, this.canvasSize.h - 11 * this.canvasSize.row, this.canvasSize.w, 2 * this.canvasSize.row)
     }
     drawRoad() {
-        this.ctx.fillStyle = '#66696E'
-        this.ctx.fillRect(0, this.canvasSize.h - 5 * this.canvasSize.row, this.canvasSize.w, 3 * this.canvasSize.row)
+        this.roadInstance = new Image()
+        this.roadInstance.src = ("./images/road3.png")
+        this.ctx.drawImage(this.roadInstance, 0, this.canvasSize.h - 5 * this.canvasSize.row, this.canvasSize.w, 3 * this.canvasSize.row)
+
     }
     drawWater() {
-        this.ctx.fillStyle = '#C3E5FA'
-        this.ctx.fillRect(0, this.canvasSize.h - 9 * this.canvasSize.row, this.canvasSize.w, 3 * this.canvasSize.row)
+
+        this.waterInstance = new Image()
+        this.waterInstance.src = ("./images/water.png")
+        this.ctx.drawImage(this.waterInstance,
+            0 - this.canvasSize.row, this.canvasSize.h - 9 * this.canvasSize.row,
+            this.canvasSize.w + 2 * this.canvasSize.row,
+            3 * this.canvasSize.row + 19)
+
     }
+
 }

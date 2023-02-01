@@ -9,11 +9,20 @@ class Car {
             h: this.canvasSize.row
         }
 
+        this.image = {
+            w: this.canvasSize.row,
+            h: this.canvasSize.row
+        }
+
         this.carPos = {
             x: carPosX,
             y: carPosY
         }
         this.carSpeed = carSpeed
+
+
+
+        this.image = undefined
 
         this.draw()
     }
@@ -21,13 +30,18 @@ class Car {
     draw() {
 
         this.move()
-        this.ctx.fillStyle = '#EDBC66'
-        this.ctx.fillRect(this.carPos.x, this.carPos.y, this.carSize.w, this.carSize.h)
 
-
-
+        this.image = new Image()
+        this.image.src = ("./images/car.png")
+        this.ctx.drawImage(
+            this.image,
+            this.carPos.x,
+            this.carPos.y,
+            this.carSize.w * 2,
+            this.carSize.h)
 
     }
+
 
 
 
