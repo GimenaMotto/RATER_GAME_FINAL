@@ -21,8 +21,10 @@ const game = {
     lives: 3,
     interval: undefined,
     fps: 100,
-    gameOverRat: undefined,
-    gameOver: undefined,
+
+    gameover: undefined,
+    score: 0,
+    win: undefined,
 
 
     init() {
@@ -80,6 +82,8 @@ const game = {
             if (this.lives === 0) { this.isGameOver() }
             if (this.playerCount === 5) { this.isWin() }
 
+            if (this.isScore()) { this.score += 200 }
+            console.log(this.score)
 
             if (this.isHome()) {
 
@@ -104,6 +108,8 @@ const game = {
         this.player.draw()
         this.livesImages.forEach(elem => elem.draw())
         this.drawCounter()
+        this.drawScore()
+        this.drawTextLives()
     },
 
     drawCounter() {
@@ -144,17 +150,24 @@ const game = {
         this.trunks = []
         this.playerCount = 0
         this.lives = 3
+    },
 
+    drawTextLives() {
+        this.ctx.fillStyle = "black"
+        this.ctx.font = "bold 50px 'Courier New'"
+        this.ctx.fillText('LIVES:', this.canvasSize.row, 11 * this.canvasSize.row + 55)
+    },
 
-
-
-
+    drawScore() {
+        this.ctx.fillStyle = "black"
+        this.ctx.font = "bold 50px 'Courier New'"
+        this.ctx.fillText(`SCORE: ${this.score} `, this.canvasSize.w / 1.4, 50)
     },
 
     createLives() {
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row, 11 * this.canvasSize.row))
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 3, 11 * this.canvasSize.row))
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 5, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 4, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 6, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 8, 11 * this.canvasSize.row))
     },
 
     createCounter() {
@@ -258,6 +271,16 @@ const game = {
             return (
                 this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h //&&
                 //this.player.playerPos.x === elem.homePos.x
+            )
+        })
+    },
+
+    isScore() {
+        return this.homes.some(elem => {
+            return (
+                this.player.playerPos.x + this.player.playerSize.w >= elem.homePos.x &&
+                this.player.playerPos.x <= elem.homePos.x + elem.homeSize.w &&
+                this.player.playerPos.y <= elem.homePos.y //+ elem.homeSize.h
             )
         })
     },

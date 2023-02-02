@@ -43,7 +43,7 @@ class Gameboard {
     }
 
     drawBackground() {
-        this.ctx.fillStyle = 'black'
+        this.ctx.fillStyle = '#8942FA'
         this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
     }
 
