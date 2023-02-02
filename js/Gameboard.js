@@ -49,14 +49,14 @@ class Gameboard {
 
     drawBeggining() {
         this.begginingInstance = new Image()
-        this.begginingInstance.src = ("./images/grass.png")
+        this.begginingInstance.src = ("./images/grass2.png")
         this.ctx.drawImage(this.begginingInstance, 0, this.canvasSize.h - 2 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
 
     }
 
     drawTransition() {
         this.transitionInstance = new Image()
-        this.transitionInstance.src = ("./images/grass.png")
+        this.transitionInstance.src = ("./images/grass2.png")
         this.ctx.drawImage(this.transitionInstance, 0, this.canvasSize.h - 6 * this.canvasSize.row, this.canvasSize.w, this.canvasSize.row)
 
     }
