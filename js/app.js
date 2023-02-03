@@ -30,6 +30,7 @@ const game = {
     good: new Audio('./audio/good.mp3'),
     success: new Audio('./audio/success.mp3'),
     winning: new Audio('./audio/winning.mp3'),
+    experiment: undefined,
 
 
     init() {

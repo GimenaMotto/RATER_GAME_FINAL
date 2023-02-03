@@ -6,6 +6,5 @@ div.addEventListener('click', () => {
     game.audio.play()
     canvas.classList.remove('d-none')
     div.classList.add('d-none')
+    game.init()
 })
-
-game.init()
