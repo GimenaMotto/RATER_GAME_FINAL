@@ -25,6 +25,11 @@ const game = {
     gameover: undefined,
     score: 0,
     win: undefined,
+    audio: new Audio('audio/Frogger - Stage Music (Full).mp3'),
+    lostlive: new Audio('audio/lost-live.mp3'),
+    good: new Audio('audio/good.mp3'),
+    success: new Audio('audio/success.mp3'),
+    winning: new Audio('audio/winning.mp3'),
 
 
     init() {
@@ -35,10 +40,6 @@ const game = {
         this.createHome()
         this.createCounter()
         this.start()
-        //this.isWin()
-        //this.isGameOver()
-
-
     },
 
     setContext() {
@@ -57,7 +58,7 @@ const game = {
 
         this.reset()
         this.interval = setInterval(() => {
-            //  this.isWin()
+
             this.clearAll()
             this.drawAll()
             this.framesIndex++
@@ -71,22 +72,26 @@ const game = {
             this.clearTrunk()
             this.isRiver()
 
-
-
             if (this.isCollisions()) {
                 this.player.playerPos.x = this.player.playerPosInicial.x
                 this.player.playerPos.y = this.player.playerPosInicial.y
                 this.lives -= 1
+                this.lostlive.play()
                 this.livesImages.pop()
             }
             if (this.lives === 0) { this.isGameOver() }
-            if (this.playerCount === 5) { this.isWin() }
+            if (this.playerCount === 5) {
+                this.winning.play()
+                this.isWin()
+            }
 
-            if (this.isScore()) { this.score += 200 }
-            console.log(this.score)
+            if (this.isScore()) {
+                this.success.play()
+                this.score += 200
+            }
 
             if (this.isHome()) {
-
+                this.good.play()
                 this.playerCount++
                 this.player.playerPos.x = this.player.playerPosInicial.x
                 this.player.playerPos.y = this.player.playerPosInicial.y
@@ -141,7 +146,6 @@ const game = {
     },
 
 
-
     reset() {
         this.gameBoard = new Gameboard(this.ctx, this.canvasSize)
 
@@ -154,28 +158,28 @@ const game = {
 
     drawTextLives() {
         this.ctx.fillStyle = "black"
-        this.ctx.font = "bold 50px 'Courier New'"
+        this.ctx.font = "bold 50px 'VT323'"
         this.ctx.fillText('LIVES:', this.canvasSize.row, 11 * this.canvasSize.row + 55)
     },
 
     drawScore() {
         this.ctx.fillStyle = "black"
-        this.ctx.font = "bold 50px 'Courier New'"
+        this.ctx.font = "bold 50px 'VT323'"
         this.ctx.fillText(`SCORE: ${this.score} `, this.canvasSize.w / 1.4, 50)
     },
 
     createLives() {
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 4, 11 * this.canvasSize.row))
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 6, 11 * this.canvasSize.row))
-        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 8, 11 * this.canvasSize.row))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 4, 11 * this.canvasSize.row + 5))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 6, 11 * this.canvasSize.row + 5))
+        this.livesImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 8, 11 * this.canvasSize.row + 5))
     },
 
     createCounter() {
-        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row, 0))
-        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 3, 0))
-        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 5, 0))
-        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 7, 0))
-        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 9, 0))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row, 5))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 3, 5))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 5, 5))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 7, 5))
+        this.counterImages.push(new Counter(this.ctx, this.canvasSize, this.canvasSize.row * 9, 5))
     },
 
     createHome() {
@@ -187,27 +191,26 @@ const game = {
     },
 
     createCar1() {
-        //this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 20))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - 5 * this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 15))
-        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 15))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - 5 * this.canvasSize.row, this.canvasSize.h - 5 * this.canvasSize.row, 4))
+        this.cars.push(new Car(this.ctx, this.canvasSize, 0 - this.canvasSize.row, this.canvasSize.h - 3 * this.canvasSize.row, 4))
 
     },
 
     createCar2() {
-        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -35))
+        this.cars.push(new Car(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 4 * this.canvasSize.row, -9))
     },
 
     createTrunk1() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4 + 2 * this.canvasSize.row, this.canvasSize.h - 9 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4, this.canvasSize.h - 9 * this.canvasSize.row, 3, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 4 + 2 * this.canvasSize.row, this.canvasSize.h - 9 * this.canvasSize.row, 3, this.canvasSize.row, this.canvasSize.row))
 
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5, this.canvasSize.h - 7 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5 + 2 * this.canvasSize.row, this.canvasSize.h - 7 * this.canvasSize.row, 10, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5, this.canvasSize.h - 7 * this.canvasSize.row, 3, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, 0 - this.canvasSize.h / 1.5 + 2 * this.canvasSize.row, this.canvasSize.h - 7 * this.canvasSize.row, 3, this.canvasSize.row, this.canvasSize.row))
 
     },
 
     createTrunk2() {
-        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -15, this.canvasSize.row, this.canvasSize.row))
+        this.trunks.push(new Trunk(this.ctx, this.canvasSize, this.canvasSize.w, this.canvasSize.h - 8 * this.canvasSize.row, -4, this.canvasSize.row, this.canvasSize.row))
     },
 
     clearCar() {
@@ -262,6 +265,7 @@ const game = {
             this.player.playerPos.x = this.player.playerPosInicial.x
             this.player.playerPos.y = this.player.playerPosInicial.y
             this.lives -= 1
+            this.lostlive.play()
             this.livesImages.pop()
         }
     },
@@ -269,8 +273,7 @@ const game = {
     isHome() {
         return this.homes.some(elem => {
             return (
-                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h //&&
-                //this.player.playerPos.x === elem.homePos.x
+                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h
             )
         })
     },
@@ -280,7 +283,7 @@ const game = {
             return (
                 this.player.playerPos.x + this.player.playerSize.w >= elem.homePos.x &&
                 this.player.playerPos.x <= elem.homePos.x + elem.homeSize.w &&
-                this.player.playerPos.y <= elem.homePos.y //+ elem.homeSize.h
+                this.player.playerPos.y <= elem.homePos.y + elem.homeSize.h
             )
         })
     },
@@ -291,23 +294,29 @@ const game = {
         this.ctx.fillStyle = '#F7AAFA'
         this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
 
+        this.win = new Image()
+        this.win.src = ("./images/ratcounter.png")
+        this.ctx.drawImage(this.win, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
+
+        this.ctx.fillStyle = "black"
+        this.ctx.font = "bold 150px 'VT323'"
+        this.ctx.fillText('YOU WIN', this.canvasSize.w / 2, 6 * this.canvasSize.row)
     },
 
     isGameOver() {
+        this.audio.pause()
         clearInterval(this.interval)
-        this.ctx.fillStyle = 'white'
+
+        this.ctx.fillStyle = '#CC2204'
         this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
 
-        this.gameOverRat = new Image()
-        this.gameOverRat.src = ("./images/ratcounter.png")
-        this.ctx.drawImage(this.gameOverRat, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
+        this.gameover = new Image()
+        this.gameover.src = ("./images/ratcounter.png")
+        this.ctx.drawImage(this.gameover, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
 
-        this.gameOver = new Image()
-        this.gameOver.src = ("./images/gameover.png")
-        this.ctx.drawImage(this.gameOver, this.canvasSize.w / 2, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
-
-
+        this.ctx.fillStyle = "black"
+        this.ctx.font = "bold 150px 'VT323'"
+        this.ctx.fillText('GAME OVER', this.canvasSize.w / 2, 6 * this.canvasSize.row)
     }
-
 
 }

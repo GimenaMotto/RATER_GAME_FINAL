@@ -20,15 +20,12 @@ class Car {
         }
         this.carSpeed = carSpeed
 
-
-
         this.image = undefined
 
         this.draw()
     }
 
     draw() {
-
         this.move()
 
         this.image = new Image()
@@ -39,11 +36,7 @@ class Car {
             this.carPos.y,
             this.carSize.w * 2,
             this.carSize.h)
-
     }
-
-
-
 
     move() {
         this.carPos.x += this.carSpeed

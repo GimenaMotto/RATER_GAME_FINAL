@@ -38,7 +38,5 @@ class Player {
         this.imageInstance = new Image()
         this.imageInstance.src = './images/ratcounter.png'
         this.ctx.drawImage(this.imageInstance, this.playerPos.x, this.playerPos.y + 15, this.playerSize.w, this.playerSize.h)
-        // this.ctx.fillStyle = ' #237838'
-        // this.ctx.fillRect(this.playerPos.x, this.playerPos.y, this.playerSize.w, this.playerSize.h)
     }
 }

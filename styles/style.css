@@ -1,7 +1,33 @@
 body {
-
     margin: 0;
     padding: 0;
 
     overflow: hidden;
+}
+
+div {
+    display: flex;
+    background-color: #A690F0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+img {
+    width: 100%;
+    width: 800px;
+    height: 700px;
+}
+
+h1 {
+    font-size: 100px;
+    text-align: center;
+    font-family: 'VT323';
+    font-weight: bold;
+    padding-top: 80px;
+    padding-bottom: 40px;
 }
