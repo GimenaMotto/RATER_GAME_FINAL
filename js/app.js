@@ -25,11 +25,11 @@ const game = {
     gameover: undefined,
     score: 0,
     win: undefined,
-    audio: new Audio('audio/Frogger - Stage Music (Full).mp3'),
-    lostlive: new Audio('audio/lost-live.mp3'),
-    good: new Audio('audio/good.mp3'),
-    success: new Audio('audio/success.mp3'),
-    winning: new Audio('audio/winning.mp3'),
+    audio: new Audio('./audio/ost.mp3'),
+    lostlive: new Audio('./audio/lost-live.mp3'),
+    good: new Audio('./audio/good.mp3'),
+    success: new Audio('./audio/success.mp3'),
+    winning: new Audio('./audio/winning.mp3'),
 
 
     init() {
