@@ -33,13 +33,20 @@ const game = {
 
 
     init() {
-
         this.setDimensions()
         this.setContext()
+        this.loadImages()
         this.createLives()
         this.createHome()
         this.createCounter()
         this.start()
+    },
+
+    loadImages() {
+        this.win = new Image()
+        this.win.src = ("./images/ratcounter.png")
+        this.gameover = new Image()
+        this.gameover.src = ("./images/ratcounter.png")
     },
 
     setContext() {
@@ -294,8 +301,6 @@ const game = {
         this.ctx.fillStyle = '#F7AAFA'
         this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
 
-        this.win = new Image()
-        this.win.src = ("./images/ratcounter.png")
         this.ctx.drawImage(this.win, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
 
         this.ctx.fillStyle = "black"
@@ -310,8 +315,6 @@ const game = {
         this.ctx.fillStyle = '#CC2204'
         this.ctx.fillRect(0, 0, this.canvasSize.w, this.canvasSize.h)
 
-        this.gameover = new Image()
-        this.gameover.src = ("./images/ratcounter.png")
         this.ctx.drawImage(this.gameover, this.canvasSize.row, this.canvasSize.row * 3, this.canvasSize.w / 2, this.canvasSize.h / 1.5)
 
         this.ctx.fillStyle = "black"

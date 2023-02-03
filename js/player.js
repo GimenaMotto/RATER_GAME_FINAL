@@ -20,7 +20,8 @@ class Player {
 
         this.playerSpeed = playerSpeed
 
-        this.imageInstance = undefined
+        this.imageInstance = new Image()
+        this.imageInstance.src = './images/ratcounter.png'
     }
 
     move() {
@@ -35,8 +36,6 @@ class Player {
 
     draw() {
         this.move()
-        this.imageInstance = new Image()
-        this.imageInstance.src = './images/ratcounter.png'
         this.ctx.drawImage(this.imageInstance, this.playerPos.x, this.playerPos.y + 15, this.playerSize.w, this.playerSize.h)
     }
 }

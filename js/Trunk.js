@@ -15,7 +15,8 @@ class Trunk {
         }
         this.trunkSpeed = trunkSpeed
 
-        this.image = undefined
+        this.image = new Image()
+        this.image.src = ("./images/wood.png")
 
         this.draw()
     }
@@ -24,8 +25,6 @@ class Trunk {
 
         this.move()
 
-        this.image = new Image()
-        this.image.src = ("./images/wood.png")
         this.ctx.drawImage(
             this.image,
             this.trunkPos.x,

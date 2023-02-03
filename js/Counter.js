@@ -12,13 +12,12 @@ class Counter {
             x: posX,
             y: posY
         }
+        this.counterInstance = new Image()
+        this.counterInstance.src = './images/ratcounter.png'
 
-        this.counterInstance = undefined
     }
 
     draw() {
-        this.counterInstance = new Image()
-        this.counterInstance.src = './images/ratcounter.png'
         this.ctx.drawImage(this.counterInstance, this.pos.x, this.pos.y, this.size.w, this.size.h)
     }
 

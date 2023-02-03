@@ -20,7 +20,8 @@ class Car {
         }
         this.carSpeed = carSpeed
 
-        this.image = undefined
+        this.image = new Image()
+        this.image.src = ("./images/car.png")
 
         this.draw()
     }
@@ -28,8 +29,6 @@ class Car {
     draw() {
         this.move()
 
-        this.image = new Image()
-        this.image.src = ("./images/car.png")
         this.ctx.drawImage(
             this.image,
             this.carPos.x,
